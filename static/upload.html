@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinVision - Data Import & Upload Center</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=3.0">
+</head>
+<body data-page="upload">
+    <div class="app-wrapper">
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>FinVision</h2>
+                    <span>SMART ANALYTICS</span>
+                </div>
+            </div>
+
+            <div class="nav-section-title">INTELLIGENCE PLATFORM</div>
+            <nav class="nav-menu">
+                <a href="/" class="nav-link">
+                    <i class="fa-solid fa-border-all"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/analytics" class="nav-link">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="/predictions" class="nav-link">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>AI Prediction</span>
+                </a>
+                <a href="/transactions" class="nav-link">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="/upload" class="nav-link active">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Upload Data</span>
+                </a>
+                <a href="#settings" class="nav-link btn-open-settings" id="nav-settings-btn">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-widget">
+                <div class="widget-header">
+                    <span class="status-dot-green"></span>
+                    <span>DATA CONNECTION</span>
+                </div>
+                <p>expenses.csv</p>
+                <div class="widget-status-row">
+                    <span>Status:</span>
+                    <span class="status-green">Live Sync</span>
+                </div>
+                <button class="btn btn-dark btn-sm" id="btn-refresh-data" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-rotate-right"></i> Reload Live Data
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar Navigation Header -->
+            <div class="top-nav-bar">
+                <div class="top-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search transactions, forecasts, anomalies (Press '/' to focus...)">
+                </div>
+                <div class="top-nav-right">
+                    <div class="db-sync-badge">
+                        <span class="status-dot-green"></span>
+                        <span>DB: Synced</span>
+                    </div>
+                    <button class="btn-icon" id="btn-theme-toggle" title="Toggle Theme (Dark / Light)">
+                        <i class="fa-solid fa-sun" id="theme-toggle-icon"></i>
+                    </button>
+                    <div class="notification-popover-container">
+                        <button class="btn-icon" id="btn-notification-toggle" title="Notifications">
+                            <i class="fa-regular fa-bell"></i>
+                            <span class="dot-blue" id="notif-badge"></span>
+                        </button>
+                        <div class="notification-popover" id="notification-popover">
+                            <div class="notif-header">
+                                <h4><i class="fa-solid fa-bell"></i> Notifications</h4>
+                                <button class="notif-mark-link" id="btn-mark-all-read">Mark all read</button>
+                            </div>
+                            <div class="notif-list">
+                                <div class="notif-item unread">
+                                    <div class="notif-icon" style="background: rgba(0, 196, 223, 0.15); color: var(--cyan);"><i class="fa-solid fa-chart-line"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>Monthly Budget Alert:</strong> Entertainment category has reached 82% of threshold.</p>
+                                        <span class="notif-time">10 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item unread">
+                                    <div class="notif-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald);"><i class="fa-solid fa-circle-check"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>Live Data Synced:</strong> 12 expense records were automatically validated.</p>
+                                        <span class="notif-time">1 hour ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item">
+                                    <div class="notif-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--purple);"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>AI Model Updated:</strong> Prediction trend confidence increased (+4.2%).</p>
+                                        <span class="notif-time">3 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-profile btn-open-settings" style="cursor: pointer;" title="Open Settings">
+                        <div>
+                            <span class="user-name-text">Elena Rostova</span>
+                            <span class="user-role-text">Chief Risk Officer</span>
+                        </div>
+                        <div class="user-avatar-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Subheader -->
+            <div class="page-subheader">
+                <div>
+                    <span class="tag-cyan-pill"><i class="fa-solid fa-hexagon"></i> DATA MANAGEMENT • INGESTION PIPELINE</span>
+                    <h1 class="page-title">Data Import & Upload Center</h1>
+                    <p class="page-subtitle">Bulk import expense records from CSV or Excel files into your database</p>
+                </div>
+            </div>
+
+            <!-- Top Upload Card -->
+            <div class="glass-card" style="margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.25rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="stat-icon-square icon-sq-cyan" style="width: 42px; height: 42px; font-size: 1.15rem;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-family: var(--font-title); font-size: 1.1rem; color: #fff;">Bulk Data Upload</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Upload CSV (.csv) or Excel (.xlsx, .xls) files to import expenses</p>
+                        </div>
+                    </div>
+                    <span class="cat-pill cat-pill-cyan"><span class="status-dot-green" style="background: var(--cyan);"></span> Ready for input</span>
+                </div>
+
+                <!-- Dropzone Box -->
+                <div class="dropzone-box" id="dropzone">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem;">
+                        <span class="fmt-badge-pill" style="color: var(--emerald);"><i class="fa-solid fa-file-excel"></i> XLSX</span>
+                        <span class="fmt-badge-pill" style="color: var(--cyan);"><i class="fa-solid fa-file-csv"></i> CSV</span>
+                    </div>
+
+                    <h3 style="font-family: var(--font-title); font-size: 1.15rem; color: #fff; margin-bottom: 0.35rem;">
+                        Drag & Drop your CSV or Excel file here
+                    </h3>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        or <span style="color: var(--cyan); font-weight: 600; text-decoration: underline;" id="btn-browse-file">click to browse files</span> from your computer
+                    </p>
+
+                    <input type="file" id="file-input" accept=".csv,.xlsx,.xls" style="display: none;">
+
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 15px; font-size: 0.72rem; color: var(--text-dim);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--emerald);"></i> Max size: 25MB • Auto-detect UTF-8 • Headers: Date, Category, Amount
+                    </div>
+
+                    <div id="file-name-display" style="margin-top: 0.85rem; font-size: 0.82rem; color: var(--cyan); font-weight: 600; display: none;"></div>
+                </div>
+
+                <!-- Mode Selection -->
+                <div style="margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.68rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.65rem;">
+                        SELECT IMPORT MODE
+                    </div>
+                    <div class="mode-card-grid">
+                        <label class="mode-radio-card selected" id="radio-card-merge">
+                            <input type="radio" name="upload-mode" value="merge" checked>
+                            <div>
+                                <div class="mode-radio-title">Merge Records</div>
+                                <div class="mode-radio-desc">Appends new entries smoothly and skips identical duplicates automatically.</div>
+                            </div>
+                        </label>
+
+                        <label class="mode-radio-card" id="radio-card-replace">
+                            <input type="radio" name="upload-mode" value="replace">
+                            <div>
+                                <div class="mode-radio-title">Replace All Data</div>
+                                <div class="mode-radio-desc">Overwrites existing database records. Recommended for clean initial setups.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Bottom Action Row -->
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                    <span style="font-size: 0.78rem; color: var(--text-dim); display: flex; align-items: center; gap: 0.35rem;">
+                        <i class="fa-solid fa-shield-halved" style="color: var(--cyan);"></i> Encrypted transfer with zero schema lock-in
+                    </span>
+                    <button class="btn btn-cyan" id="btn-upload-file">
+                        <i class="fa-solid fa-upload"></i> Confirm & Import Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Export & Utilities Card -->
+            <div class="glass-card">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+                    <div class="stat-icon-square icon-sq-emerald" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-family: var(--font-title); font-size: 1.1rem; color: #fff;">Export & Utilities</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">Download datasets or sample template files</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                    <!-- Row 1: Sample CSV -->
+                    <div style="background: var(--bg-card-sub); border: 1px solid var(--border-color); padding: 1rem 1.15rem; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 0.85rem;">
+                            <div class="stat-icon-square icon-sq-purple">
+                                <i class="fa-regular fa-file-code"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 0.9rem; color: #fff; font-weight: 600;">Download Sample Template</h4>
+                                <p style="font-size: 0.78rem; color: var(--text-muted);">
+                                    Download a formatted sample CSV file with required headers ( <code style="color: var(--cyan);">'Date'</code>, <code style="color: var(--cyan);">'Category'</code>, <code style="color: var(--cyan);">'Amount'</code> ).
+                                </p>
+                            </div>
+                        </div>
+                        <button class="btn btn-dark btn-sm" id="btn-download-template">
+                            <i class="fa-solid fa-download"></i> Sample CSV
+                        </button>
+                    </div>
+
+                    <!-- Row 2: Export CSV -->
+                    <div style="background: var(--bg-card-sub); border: 1px solid var(--border-color); padding: 1rem 1.15rem; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 0.85rem;">
+                            <div class="stat-icon-square icon-sq-cyan">
+                                <i class="fa-solid fa-file-csv"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 0.9rem; color: #fff; font-weight: 600;">Export Current Dataset (CSV)</h4>
+                                <p style="font-size: 0.78rem; color: var(--text-muted);">Download all stored transaction records as a standard CSV file for external analysis or backups.</p>
+                            </div>
+                        </div>
+                        <a href="/api/export?format=csv" class="btn btn-dark btn-sm">
+                            <i class="fa-solid fa-download"></i> Export CSV
+                        </a>
+                    </div>
+
+                    <!-- Row 3: Export Excel -->
+                    <div style="background: var(--bg-card-sub); border: 1px solid var(--border-color); padding: 1rem 1.15rem; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 0.85rem;">
+                            <div class="stat-icon-square icon-sq-emerald">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 0.9rem; color: #fff; font-weight: 600;">Export Current Dataset (Excel)</h4>
+                                <p style="font-size: 0.78rem; color: var(--text-muted);">
+                                    Download formatted <code style="color: var(--emerald); font-weight: 600;">.xlsx</code> spreadsheet with styled columns, data types, and pivot-ready layout.
+                                </p>
+                            </div>
+                        </div>
+                        <a href="/api/export?format=excel" class="btn btn-dark btn-sm">
+                            <i class="fa-solid fa-file-excel"></i> Export Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal" style="display: none;">
+        <div class="modal-card modal-settings" style="max-width: 580px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-gear"></i> Platform Settings</h3>
+                <button class="btn-icon modal-close" id="btn-close-settings"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="settings-modal-body" style="padding: 1.25rem 1.5rem;">
+                <div class="settings-nav-tabs" style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+                    <button class="btn btn-sm btn-dark settings-tab-btn active" data-tab="theme-tab"><i class="fa-solid fa-palette"></i> Appearance & Theme</button>
+                    <button class="btn btn-sm btn-dark settings-tab-btn" data-tab="notif-tab"><i class="fa-solid fa-bell"></i> Notifications</button>
+                    <button class="btn btn-sm btn-dark settings-tab-btn" data-tab="general-tab"><i class="fa-solid fa-sliders"></i> Preferences</button>
+                </div>
+                <div class="settings-tab-content">
+                    <!-- Theme Tab -->
+                    <div class="settings-pane active" id="theme-tab">
+                        <span class="setting-label">SELECT INTERFACE THEME</span>
+                        <div class="theme-options-grid">
+                            <button type="button" class="theme-opt-btn active" id="theme-btn-dark">
+                                <i class="fa-solid fa-moon"></i> Dark Theme (Default)
+                            </button>
+                            <button type="button" class="theme-opt-btn" id="theme-btn-light">
+                                <i class="fa-solid fa-sun"></i> Bright & Light Theme
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Notifications Tab -->
+                    <div class="settings-pane" id="notif-tab" style="display: none;">
+                        <span class="setting-label">ALERT & NOTIFICATION PREFERENCES</span>
+                        <div class="setting-toggle-row">
+                            <span>Budget Limit Threshold Alerts (85%)</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-budget-alerts">
+                        </div>
+                        <div class="setting-toggle-row">
+                            <span>AI Forecast & Trend Updates</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-ai-alerts">
+                        </div>
+                        <div class="setting-toggle-row">
+                            <span>Real-Time CSV Sync Notifications</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-sync-alerts">
+                        </div>
+                    </div>
+                    <!-- General Tab -->
+                    <div class="settings-pane" id="general-tab" style="display: none;">
+                        <span class="setting-label">DISPLAY REGIONAL PREFERENCES</span>
+                        <div class="setting-toggle-row">
+                            <span>Primary Currency Symbol</span>
+                            <select class="form-control" style="width: 140px; padding: 0.35rem 0.65rem;">
+                                <option value="INR" selected>INR (₹)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                            </select>
+                        </div>
+                        <div class="setting-toggle-row" style="margin-top: 0.5rem;">
+                            <span>Auto-Refresh Interval</span>
+                            <select class="form-control" style="width: 140px; padding: 0.35rem 0.65rem;">
+                                <option value="realtime" selected>Realtime</option>
+                                <option value="5m">Every 5 min</option>
+                                <option value="15m">Every 15 min</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end;">
+                <button class="btn btn-cyan" id="btn-save-settings"><i class="fa-solid fa-check"></i> Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js?v=3.0"></script>
+</body>
+</html>

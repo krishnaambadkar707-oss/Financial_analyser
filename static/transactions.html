@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinVision - Transaction Management</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=3.0">
+</head>
+<body data-page="transactions">
+    <div class="app-wrapper">
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>FinVision</h2>
+                    <span>SMART ANALYTICS</span>
+                </div>
+            </div>
+
+            <div class="nav-section-title">INTELLIGENCE PLATFORM</div>
+            <nav class="nav-menu">
+                <a href="/" class="nav-link">
+                    <i class="fa-solid fa-border-all"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/analytics" class="nav-link">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="/predictions" class="nav-link">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>AI Prediction</span>
+                </a>
+                <a href="/transactions" class="nav-link active">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="/upload" class="nav-link">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Upload Data</span>
+                </a>
+                <a href="#settings" class="nav-link btn-open-settings" id="nav-settings-btn">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-widget">
+                <div class="widget-header">
+                    <span class="status-dot-green"></span>
+                    <span>DATA CONNECTION</span>
+                </div>
+                <p>expenses.csv</p>
+                <div class="widget-status-row">
+                    <span>Status:</span>
+                    <span class="status-green">Live Sync</span>
+                </div>
+                <button class="btn btn-dark btn-sm" id="btn-refresh-data" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-rotate-right"></i> Reload Live Data
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar Navigation Header -->
+            <div class="top-nav-bar">
+                <div class="top-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search transactions, forecasts, anomalies (Press '/' to focus...)">
+                </div>
+                <div class="top-nav-right">
+                    <div class="db-sync-badge">
+                        <span class="status-dot-green"></span>
+                        <span>DB: Synced</span>
+                    </div>
+                    <button class="btn-icon" id="btn-theme-toggle" title="Toggle Theme (Dark / Light)">
+                        <i class="fa-solid fa-sun" id="theme-toggle-icon"></i>
+                    </button>
+                    <div class="notification-popover-container">
+                        <button class="btn-icon" id="btn-notification-toggle" title="Notifications">
+                            <i class="fa-regular fa-bell"></i>
+                            <span class="dot-blue" id="notif-badge"></span>
+                        </button>
+                        <div class="notification-popover" id="notification-popover">
+                            <div class="notif-header">
+                                <h4><i class="fa-solid fa-bell"></i> Notifications</h4>
+                                <button class="notif-mark-link" id="btn-mark-all-read">Mark all read</button>
+                            </div>
+                            <div class="notif-list">
+                                <div class="notif-item unread">
+                                    <div class="notif-icon" style="background: rgba(0, 196, 223, 0.15); color: var(--cyan);"><i class="fa-solid fa-chart-line"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>Monthly Budget Alert:</strong> Entertainment category has reached 82% of threshold.</p>
+                                        <span class="notif-time">10 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item unread">
+                                    <div class="notif-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald);"><i class="fa-solid fa-circle-check"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>Live Data Synced:</strong> 12 expense records were automatically validated.</p>
+                                        <span class="notif-time">1 hour ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item">
+                                    <div class="notif-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--purple);"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>AI Model Updated:</strong> Prediction trend confidence increased (+4.2%).</p>
+                                        <span class="notif-time">3 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-profile btn-open-settings" style="cursor: pointer;" title="Open Settings">
+                        <div>
+                            <span class="user-name-text">Elena Rostova</span>
+                            <span class="user-role-text">Chief Risk Officer</span>
+                        </div>
+                        <div class="user-avatar-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Subheader -->
+            <div class="page-subheader">
+                <div>
+                    <span class="tag-cyan-pill">LEDGER & AUDITING • v2.4 Live Node</span>
+                    <h1 class="page-title">Transaction Management</h1>
+                    <p class="page-subtitle">Search, filter, manage, and audit all logged expense records</p>
+                </div>
+                <div style="display: flex; gap: 0.65rem;">
+                    <a href="/upload" class="btn btn-dark">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Bulk Upload
+                    </a>
+                    <button class="btn btn-cyan" id="btn-open-modal">
+                        <i class="fa-solid fa-plus"></i> Add New Expense
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid (Row of 4 Cards) -->
+            <div class="stats-grid-4">
+                <div class="stat-card-item">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">TOTAL OUTFLOW</span>
+                        <div class="stat-icon-square icon-sq-cyan">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-val" id="tx-stat-total">₹3,200.00</div>
+                    <div class="stat-card-bottom">
+                        <span style="color: var(--emerald); font-weight: 600;"><i class="fa-solid fa-arrow-trend-up"></i> +4.2% from last cycle</span>
+                    </div>
+                </div>
+
+                <div class="stat-card-item">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">LOGGED ENTRIES</span>
+                        <div class="stat-icon-square icon-sq-emerald">
+                            <i class="fa-regular fa-list-check"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-val" id="tx-stat-count">12</div>
+                    <div class="stat-card-bottom">
+                        <span style="color: var(--cyan); font-weight: 600;" id="tx-stat-disp-sub">7 displayed</span> <span>in active view</span>
+                    </div>
+                </div>
+
+                <div class="stat-card-item">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">TOP SPEND SECTOR</span>
+                        <div class="stat-icon-square icon-sq-purple">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-val" id="tx-stat-top-cat">Health & Med</div>
+                    <div class="stat-card-bottom">
+                        <span id="tx-stat-single-peak">₹750.00 single peak</span>
+                    </div>
+                </div>
+
+                <div class="stat-card-item">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">SYNC INTEGRITY</span>
+                        <div class="stat-icon-square icon-sq-cyan">
+                            <i class="fa-solid fa-shield-check"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-val" style="color: var(--emerald);">100.0%</div>
+                    <div class="stat-card-bottom">
+                        <span>expenses.csv verified</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="glass-card" style="margin-bottom: 1.5rem;">
+                <div class="card-title-row">
+                    <div>
+                        <h3>All Recorded Expenses</h3>
+                        <p>Total items logged in your personal finance database</p>
+                    </div>
+                    <button class="btn btn-dark btn-sm" id="btn-clear-all" style="border-color: rgba(244, 63, 94, 0.3); color: var(--rose);">
+                        <i class="fa-solid fa-trash-can"></i> Clear Database
+                    </button>
+                </div>
+
+                <!-- Filter Controls Bar -->
+                <div style="display: flex; items-center: center; gap: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+                    <div class="top-search-box" style="flex: 1; min-width: 280px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="tx-search-input" placeholder="Search by date, category, or amount...">
+                    </div>
+
+                    <select id="tx-category-filter" class="form-control" style="width: 200px; background: var(--bg-card); border-radius: 25px; cursor: pointer;">
+                        <option value="all">All Categories</option>
+                    </select>
+
+                    <button class="btn-icon" title="Filter Settings">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+                    <button class="btn-icon" title="Download Records">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>CATEGORY</th>
+                                <th class="text-right">AMOUNT</th>
+                                <th class="text-center">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-body">
+                            <tr><td colspan="4" class="text-center py-3 text-muted">Loading transactions...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.78rem; color: var(--text-dim);">
+                    <span id="tx-pagination-info">Showing 1 to 7 of 12 records</span>
+                    <div style="display: flex; align-items: center; gap: 0.35rem;">
+                        <button class="btn btn-dark btn-sm" style="padding: 0.25rem 0.65rem;">|&lt;</button>
+                        <button class="btn btn-dark btn-sm" style="padding: 0.25rem 0.65rem;">&lt;</button>
+                        <button class="btn btn-cyan btn-sm" style="padding: 0.25rem 0.65rem;">1</button>
+                        <button class="btn btn-dark btn-sm" style="padding: 0.25rem 0.65rem;">2</button>
+                        <button class="btn btn-dark btn-sm" style="padding: 0.25rem 0.65rem;">&gt;</button>
+                        <button class="btn btn-dark btn-sm" style="padding: 0.25rem 0.65rem;">&gt;|</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Grid (2 Cards) -->
+            <div class="grid-3-2">
+                <!-- Weekly Run Rate Chart -->
+                <div class="glass-card">
+                    <div class="card-title-row">
+                        <div>
+                            <h3>Weekly Run Rate & Spending Trend</h3>
+                            <p>Continuous distribution over current billing cycle</p>
+                        </div>
+                        <span class="cat-pill cat-pill-emerald"><span class="status-dot-green"></span> Real-time</span>
+                    </div>
+
+                    <div style="height: 220px; position: relative;">
+                        <canvas id="transactionTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Auto-Categorization ML Card -->
+                <div class="glass-card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), var(--bg-card)); border-color: rgba(139, 92, 246, 0.25);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="stat-icon-square icon-sq-purple" style="width: 40px; height: 40px;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-family: var(--font-title); font-size: 1.05rem; color: #fff;">Auto-Categorization</h3>
+                            <p style="font-size: 0.78rem; color: var(--purple); font-weight: 600;">Powered by FinVision ML</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
+                        Unlabeled receipts and bank entries are tagged instantly with 98.4% contextual accuracy based on historical audit heuristics.
+                    </p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.78rem;">
+                        <span style="color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 0.8px;">ACTIVE MODEL</span>
+                        <span style="color: var(--cyan); font-weight: 700;">BERT-Fin-v4.1</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Adding Expense -->
+    <div class="modal-overlay" id="expense-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-plus" style="color: var(--cyan);"></i> Add New Expense</h3>
+                <button class="btn-close" id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="add-expense-form">
+                <div class="form-group">
+                    <label for="exp-date">Date</label>
+                    <input type="date" id="exp-date" required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="exp-category">Category</label>
+                    <input type="text" id="exp-category" placeholder="e.g. Shopping, Health, Dining, Utilities" required class="form-control">
+                    <div class="category-pills">
+                        <span class="pill" data-cat="Shopping">Shopping</span>
+                        <span class="pill" data-cat="Health">Health</span>
+                        <span class="pill" data-cat="Dining">Dining</span>
+                        <span class="pill" data-cat="Utilities">Utilities</span>
+                        <span class="pill" data-cat="Food">Food</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exp-amount">Amount (₹)</label>
+                    <input type="number" step="0.01" min="0.01" id="exp-amount" placeholder="0.00" required class="form-control">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-dark" id="btn-cancel-modal">Cancel</button>
+                    <button type="submit" class="btn btn-cyan"><i class="fa-solid fa-check"></i> Save Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal" style="display: none;">
+        <div class="modal-card modal-settings" style="max-width: 580px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-gear"></i> Platform Settings</h3>
+                <button class="btn-icon modal-close" id="btn-close-settings"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="settings-modal-body" style="padding: 1.25rem 1.5rem;">
+                <div class="settings-nav-tabs" style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+                    <button class="btn btn-sm btn-dark settings-tab-btn active" data-tab="theme-tab"><i class="fa-solid fa-palette"></i> Appearance & Theme</button>
+                    <button class="btn btn-sm btn-dark settings-tab-btn" data-tab="notif-tab"><i class="fa-solid fa-bell"></i> Notifications</button>
+                    <button class="btn btn-sm btn-dark settings-tab-btn" data-tab="general-tab"><i class="fa-solid fa-sliders"></i> Preferences</button>
+                </div>
+                <div class="settings-tab-content">
+                    <!-- Theme Tab -->
+                    <div class="settings-pane active" id="theme-tab">
+                        <span class="setting-label">SELECT INTERFACE THEME</span>
+                        <div class="theme-options-grid">
+                            <button type="button" class="theme-opt-btn active" id="theme-btn-dark">
+                                <i class="fa-solid fa-moon"></i> Dark Theme (Default)
+                            </button>
+                            <button type="button" class="theme-opt-btn" id="theme-btn-light">
+                                <i class="fa-solid fa-sun"></i> Bright & Light Theme
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Notifications Tab -->
+                    <div class="settings-pane" id="notif-tab" style="display: none;">
+                        <span class="setting-label">ALERT & NOTIFICATION PREFERENCES</span>
+                        <div class="setting-toggle-row">
+                            <span>Budget Limit Threshold Alerts (85%)</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-budget-alerts">
+                        </div>
+                        <div class="setting-toggle-row">
+                            <span>AI Forecast & Trend Updates</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-ai-alerts">
+                        </div>
+                        <div class="setting-toggle-row">
+                            <span>Real-Time CSV Sync Notifications</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-sync-alerts">
+                        </div>
+                    </div>
+                    <!-- General Tab -->
+                    <div class="settings-pane" id="general-tab" style="display: none;">
+                        <span class="setting-label">DISPLAY REGIONAL PREFERENCES</span>
+                        <div class="setting-toggle-row">
+                            <span>Primary Currency Symbol</span>
+                            <select class="form-control" style="width: 140px; padding: 0.35rem 0.65rem;">
+                                <option value="INR" selected>INR (₹)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                            </select>
+                        </div>
+                        <div class="setting-toggle-row" style="margin-top: 0.5rem;">
+                            <span>Auto-Refresh Interval</span>
+                            <select class="form-control" style="width: 140px; padding: 0.35rem 0.65rem;">
+                                <option value="realtime" selected>Realtime</option>
+                                <option value="5m">Every 5 min</option>
+                                <option value="15m">Every 15 min</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end;">
+                <button class="btn btn-cyan" id="btn-save-settings"><i class="fa-solid fa-check"></i> Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js?v=3.0"></script>
+</body>
+</html>

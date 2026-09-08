@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinVision - AI Expense Forecasting & Insights</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=3.0">
+</head>
+<body data-page="predictions">
+    <div class="app-wrapper">
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>FinVision</h2>
+                    <span>SMART ANALYTICS</span>
+                </div>
+            </div>
+
+            <div class="nav-section-title">INTELLIGENCE PLATFORM</div>
+            <nav class="nav-menu">
+                <a href="/" class="nav-link">
+                    <i class="fa-solid fa-border-all"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/analytics" class="nav-link">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="/predictions" class="nav-link active">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>AI Prediction</span>
+                </a>
+                <a href="/transactions" class="nav-link">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="/upload" class="nav-link">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Upload Data</span>
+                </a>
+                <a href="#settings" class="nav-link btn-open-settings" id="nav-settings-btn">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-widget">
+                <div class="widget-header">
+                    <span class="status-dot-green"></span>
+                    <span>DATA CONNECTION</span>
+                </div>
+                <p>expenses.csv</p>
+                <div class="widget-status-row">
+                    <span>Status:</span>
+                    <span class="status-green">Live Sync</span>
+                </div>
+                <button class="btn btn-dark btn-sm" id="btn-refresh-data" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-rotate-right"></i> Reload Live Data
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar Navigation Header -->
+            <div class="top-nav-bar">
+                <div class="top-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search transactions, forecasts, anomalies (Press '/' to focus...)">
+                </div>
+                <div class="top-nav-right">
+                    <div class="db-sync-badge">
+                        <span class="status-dot-green"></span>
+                        <span>DB: Synced</span>
+                    </div>
+                    <button class="btn-icon" id="btn-theme-toggle" title="Toggle Theme (Dark / Light)">
+                        <i class="fa-solid fa-sun" id="theme-toggle-icon"></i>
+                    </button>
+                    <div class="notification-popover-container">
+                        <button class="btn-icon" id="btn-notification-toggle" title="Notifications">
+                            <i class="fa-regular fa-bell"></i>
+                            <span class="dot-blue" id="notif-badge"></span>
+                        </button>
+                        <div class="notification-popover" id="notification-popover">
+                            <div class="notif-header">
+                                <h4><i class="fa-solid fa-bell"></i> Notifications</h4>
+                                <button class="notif-mark-link" id="btn-mark-all-read">Mark all read</button>
+                            </div>
+                            <div class="notif-list">
+                                <div class="notif-item unread">
+                                    <div class="notif-icon" style="background: rgba(0, 196, 223, 0.15); color: var(--cyan);"><i class="fa-solid fa-chart-line"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>Monthly Budget Alert:</strong> Entertainment category has reached 82% of threshold.</p>
+                                        <span class="notif-time">10 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item unread">
+                                    <div class="notif-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald);"><i class="fa-solid fa-circle-check"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>Live Data Synced:</strong> 12 expense records were automatically validated.</p>
+                                        <span class="notif-time">1 hour ago</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item">
+                                    <div class="notif-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--purple);"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                    <div class="notif-content">
+                                        <p><strong>AI Model Updated:</strong> Prediction trend confidence increased (+4.2%).</p>
+                                        <span class="notif-time">3 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-profile btn-open-settings" style="cursor: pointer;" title="Open Settings">
+                        <div>
+                            <span class="user-name-text">Elena Rostova</span>
+                            <span class="user-role-text">Chief Risk Officer</span>
+                        </div>
+                        <div class="user-avatar-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Subheader -->
+            <div class="page-subheader">
+                <div>
+                    <span class="tag-cyan-pill"><span class="status-dot-green" style="background: var(--cyan);"></span> ADAPTIVE NEURAL FORECASTING</span>
+                    <h1 class="page-title">AI Expense Forecasting & Insights</h1>
+                    <p class="page-subtitle">Statistical intelligence, moving average predictions, and dynamic overspending detection models.</p>
+                </div>
+                <button class="btn btn-cyan" id="btn-open-modal">
+                    <i class="fa-solid fa-plus"></i> Add New Expense
+                </button>
+            </div>
+
+            <!-- Top Engine Hero Box -->
+            <div class="engine-container">
+                <div style="flex: 1; min-width: 320px;">
+                    <span class="cat-pill cat-pill-cyan" style="margin-bottom: 0.65rem;"><i class="fa-solid fa-wand-magic-sparkles"></i> PREDICTIVE AI ENGINE</span>
+                    <h2 style="font-family: var(--font-title); font-size: 1.45rem; color: #fff; margin-bottom: 0.75rem;">Next Month Expenditure Forecast</h2>
+                    
+                    <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.65rem;" id="predict-alert-info">
+                        <i class="fa-solid fa-circle-info" style="color: var(--cyan); font-size: 1rem;"></i>
+                        <span id="predict-info-text">Need at least 3 months of data for 3-month moving average prediction (currently 2 month(s)). Using current average.</span>
+                    </div>
+                </div>
+
+                <div class="engine-projected-card">
+                    <div style="font-size: 0.68rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">PROJECTED NEXT MONTH</div>
+                    <div style="font-family: var(--font-title); font-size: 2.2rem; font-weight: 800; color: var(--cyan); line-height: 1.15; margin: 0.2rem 0;" id="pred-hero-amount">
+                        ₹3,785.00
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--emerald); font-weight: 600;">
+                        <i class="fa-solid fa-chart-line"></i> Baseline confidence index: 94.2%
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Metric Cards Row -->
+            <div class="stats-grid-4" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="stat-card-item">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">CURRENT MONTH SPEND</span>
+                        <div class="stat-icon-square icon-sq-emerald">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-val" id="pred-stat-current">₹350.00</div>
+                    <div class="stat-card-bottom" style="margin-bottom: 0.5rem;">
+                        <span><span class="status-dot-green"></span> Active billing period (Day 8 of 30)</span>
+                    </div>
+                    <div class="progress-container"><div class="progress-fill" style="width: 25%; background: var(--emerald);"></div></div>
+                </div>
+
+                <div class="stat-card-item">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">MONTHLY AVERAGE</span>
+                        <div class="stat-icon-square icon-sq-cyan">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-val" id="pred-stat-avg">₹3,785.00</div>
+                    <div class="stat-card-bottom" style="margin-bottom: 0.5rem;">
+                        <span><span class="status-dot-green" style="background: var(--cyan);"></span> Derived from prior cycles</span>
+                    </div>
+                    <div class="progress-container"><div class="progress-fill" style="width: 65%; background: var(--cyan);"></div></div>
+                </div>
+
+                <div class="stat-card-item">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">OVERSPEND THRESHOLD (+20%)</span>
+                        <div class="stat-icon-square icon-sq-purple">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-val" id="pred-stat-threshold">₹4,542.00</div>
+                    <div class="stat-card-bottom" style="margin-bottom: 0.5rem;">
+                        <span><span class="status-dot-green" style="background: var(--purple);"></span> Upper risk boundary guardrail</span>
+                    </div>
+                    <div class="progress-container"><div class="progress-fill" style="width: 80%; background: var(--purple);"></div></div>
+                </div>
+            </div>
+
+            <!-- Main Forecast Curve Chart Card -->
+            <div class="glass-card" style="margin-bottom: 1.5rem;">
+                <div class="card-title-row">
+                    <div>
+                        <h3>Statistical Projection & Tolerance Envelope</h3>
+                        <p>Confidence spread over trailing and upcoming 6-week epochs</p>
+                    </div>
+                    <div style="display: flex; gap: 1rem; font-size: 0.75rem; color: var(--text-muted);">
+                        <span style="display: flex; align-items: center; gap: 0.35rem;"><span style="width:8px; height:8px; background:var(--cyan); border-radius:50%;"></span> Projection Path</span>
+                        <span style="display: flex; align-items: center; gap: 0.35rem;"><span style="width:8px; height:8px; background:var(--purple); border-radius:50%;"></span> Overspend Line (+20%)</span>
+                        <span style="display: flex; align-items: center; gap: 0.35rem;"><span style="width:8px; height:8px; background:var(--emerald); border-radius:50%;"></span> Actual Incurred</span>
+                    </div>
+                </div>
+
+                <div style="height: 280px; position: relative;">
+                    <canvas id="predictionLineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Middle Methodology & Anomaly Cards -->
+            <div class="grid-2col">
+                <!-- How Algorithm Works -->
+                <div class="glass-card">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="stat-icon-square icon-sq-cyan">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.68rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">METHODOLOGY</span>
+                            <h3 style="font-family: var(--font-title); font-size: 1.05rem; color: #fff;">How the Algorithm Works</h3>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                        FinVision computes a <strong>3-Month Moving Average</strong>. When fewer than 3 months of historical data exist, it calculates a weighted monthly mean to provide reliable estimates.
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; background: var(--bg-card-sub); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-md); font-size: 0.78rem; font-family: monospace;">
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-dim);">Algorithm:</span> <span style="color: var(--cyan);">MA_3 = (M1 + M2 + M3) / 3</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-dim);">Active Strategy:</span> <span style="color: var(--emerald);">Weighted Harmonic Mean Fallback</span></div>
+                    </div>
+                    <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--emerald); display: flex; align-items: center; gap: 0.35rem;">
+                        <i class="fa-solid fa-circle-check"></i> Validated against 1,200+ localized ledger sets
+                    </div>
+                </div>
+
+                <!-- Automated Overspending Alerts -->
+                <div class="glass-card">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="stat-icon-square icon-sq-purple">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.68rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">ANOMALY DETECTION</span>
+                            <h3 style="font-family: var(--font-title); font-size: 1.05rem; color: #fff;">Automated Overspending Alerts</h3>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                        A high-priority warning is triggered if current month spending surpasses historical monthly averages by <strong>20% or more</strong>, keeping your budget on track before deviations escalate.
+                    </p>
+                    <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div style="flex: 1; background: var(--bg-card-sub); border: 1px solid var(--border-color); padding: 0.65rem; border-radius: var(--radius-md);">
+                            <span style="font-size: 0.7rem; color: var(--text-dim);">Sensitivity Level</span>
+                            <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">Strict (20%)</div>
+                        </div>
+                        <div style="flex: 1; background: var(--bg-card-sub); border: 1px solid var(--border-color); padding: 0.65rem; border-radius: var(--radius-md);">
+                            <span style="font-size: 0.7rem; color: var(--text-dim);">Response Protocol</span>
+                            <div style="font-size: 0.95rem; font-weight: 700; color: var(--cyan);">Instant Dispatch</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim);">
+                        <span style="display: flex; align-items: center; gap: 0.35rem;"><span class="status-dot-green"></span> Alert system active & listening</span>
+                        <a href="#" style="color: var(--cyan); text-decoration: none; font-weight: 600;">Configure Rule &gt;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Card: Data Corpus Integrity -->
+            <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="stat-icon-square icon-sq-cyan" style="width: 36px; height: 36px;">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 0.88rem; color: #fff; font-weight: 600;">Data Corpus Integrity</h4>
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">Connected file: <strong>expenses.csv</strong> • Last automated ingestion run 3 minutes ago</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.65rem;">
+                    <button class="btn btn-dark btn-sm"><i class="fa-regular fa-eye"></i> View Forecast Log</button>
+                    <button class="btn btn-dark btn-sm"><i class="fa-solid fa-sliders"></i> Parameters</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Adding Expense -->
+    <div class="modal-overlay" id="expense-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-plus" style="color: var(--cyan);"></i> Add New Expense</h3>
+                <button class="btn-close" id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="add-expense-form">
+                <div class="form-group">
+                    <label for="exp-date">Date</label>
+                    <input type="date" id="exp-date" required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="exp-category">Category</label>
+                    <input type="text" id="exp-category" placeholder="e.g. Bills, Shopping, Food, Health, Utilities" required class="form-control">
+                    <div class="category-pills">
+                        <span class="pill" data-cat="Bills">Bills</span>
+                        <span class="pill" data-cat="Shopping">Shopping</span>
+                        <span class="pill" data-cat="Food">Food</span>
+                        <span class="pill" data-cat="Health">Health</span>
+                        <span class="pill" data-cat="Utilities">Utilities</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exp-amount">Amount (₹)</label>
+                    <input type="number" step="0.01" min="0.01" id="exp-amount" placeholder="0.00" required class="form-control">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-dark" id="btn-cancel-modal">Cancel</button>
+                    <button type="submit" class="btn btn-cyan"><i class="fa-solid fa-check"></i> Save Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal" style="display: none;">
+        <div class="modal-card modal-settings" style="max-width: 580px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-gear"></i> Platform Settings</h3>
+                <button class="btn-icon modal-close" id="btn-close-settings"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="settings-modal-body" style="padding: 1.25rem 1.5rem;">
+                <div class="settings-nav-tabs" style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+                    <button class="btn btn-sm btn-dark settings-tab-btn active" data-tab="theme-tab"><i class="fa-solid fa-palette"></i> Appearance & Theme</button>
+                    <button class="btn btn-sm btn-dark settings-tab-btn" data-tab="notif-tab"><i class="fa-solid fa-bell"></i> Notifications</button>
+                    <button class="btn btn-sm btn-dark settings-tab-btn" data-tab="general-tab"><i class="fa-solid fa-sliders"></i> Preferences</button>
+                </div>
+                <div class="settings-tab-content">
+                    <!-- Theme Tab -->
+                    <div class="settings-pane active" id="theme-tab">
+                        <span class="setting-label">SELECT INTERFACE THEME</span>
+                        <div class="theme-options-grid">
+                            <button type="button" class="theme-opt-btn active" id="theme-btn-dark">
+                                <i class="fa-solid fa-moon"></i> Dark Theme (Default)
+                            </button>
+                            <button type="button" class="theme-opt-btn" id="theme-btn-light">
+                                <i class="fa-solid fa-sun"></i> Bright & Light Theme
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Notifications Tab -->
+                    <div class="settings-pane" id="notif-tab" style="display: none;">
+                        <span class="setting-label">ALERT & NOTIFICATION PREFERENCES</span>
+                        <div class="setting-toggle-row">
+                            <span>Budget Limit Threshold Alerts (85%)</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-budget-alerts">
+                        </div>
+                        <div class="setting-toggle-row">
+                            <span>AI Forecast & Trend Updates</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-ai-alerts">
+                        </div>
+                        <div class="setting-toggle-row">
+                            <span>Real-Time CSV Sync Notifications</span>
+                            <input type="checkbox" class="toggle-checkbox" checked id="pref-sync-alerts">
+                        </div>
+                    </div>
+                    <!-- General Tab -->
+                    <div class="settings-pane" id="general-tab" style="display: none;">
+                        <span class="setting-label">DISPLAY REGIONAL PREFERENCES</span>
+                        <div class="setting-toggle-row">
+                            <span>Primary Currency Symbol</span>
+                            <select class="form-control" style="width: 140px; padding: 0.35rem 0.65rem;">
+                                <option value="INR" selected>INR (₹)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                            </select>
+                        </div>
+                        <div class="setting-toggle-row" style="margin-top: 0.5rem;">
+                            <span>Auto-Refresh Interval</span>
+                            <select class="form-control" style="width: 140px; padding: 0.35rem 0.65rem;">
+                                <option value="realtime" selected>Realtime</option>
+                                <option value="5m">Every 5 min</option>
+                                <option value="15m">Every 15 min</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end;">
+                <button class="btn btn-cyan" id="btn-save-settings"><i class="fa-solid fa-check"></i> Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js?v=3.0"></script>
+</body>
+</html>
